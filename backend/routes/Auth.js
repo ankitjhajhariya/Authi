@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const authMiddleware = require('../middleware/Auth');
+const Product = require('../Models/product');
 
 const router = express.Router();
-const SECRET = process.env.JWT_SECRET || 'YourSecretKeyHere';
+const SECRET = process.env.JWT_SECRET;
 
 // ✅ SIGNUP
 router.post('/signup', async (req, res) => {
@@ -35,8 +36,18 @@ router.post('/login', async (req, res) => {
 });
 
 // ✅ PROTECTED ROUTE
-router.get('/protected', authMiddleware, (req, res) => {
-    res.json({ msg: `Hello User ${req.user.id}, you are authenticated!` });
+router.get('/protected', authMiddleware, async (req, res) => {
+    try {
+        const product = await Product.find();
+        res.json({
+            product,
+            msg: `Hello User ${req.user.id}, you are authenticated!`
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error while fetching products.' });
+    }
 });
+
 
 module.exports = router;
