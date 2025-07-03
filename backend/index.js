@@ -22,6 +22,10 @@ mongoose.connect(MONGO_URI)
 // ✅ Routes
 app.use('/api', authRoutes);
 
+api.get('/', (requestAnimationFrame, res) => {
+    res.send('root Get api...Backend is running');
+})
+
 // ✅ Server start
 app.listen(PORT, () =>
     console.log(`🚀 Server running on http://localhost:${PORT}`)
