@@ -1,53 +1,17 @@
-// backend/routes/Auth.js
 const express = require('express');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../Models/user');
 const authMiddleware = require('../middleware/Auth');
-const Product = require('../Models/product');
+const protectedController = require('../Controllers/protected/protected.api');
+const logSign = require('../Controllers/logSign');
 
 const router = express.Router();
-const SECRET = process.env.JWT_SECRET;
 
-// ✅ SIGNUP
-router.post('/signup', async (req, res) => {
-    const { name, email, password } = req.body;
+// SIGNUP
+router.post('/signup', logSign.signUp);
 
-    const existing = await User.findOne({ email });
-    if (existing) return res.status(400).json({ message: 'Email already in use' });
+// LOGIN
+router.post('/login', logSign.logIn);
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashed });
-    await user.save();
-
-    res.json({ message: 'Signup successful!' });
-});
-
-// ✅ LOGIN
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password)))
-        return res.status(400).json({ message: 'Invalid credentials' });
-
-    const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: '1h' });
-    res.json({ token, message: 'Login successful!' });
-});
-
-// ✅ PROTECTED ROUTE
-router.get('/protected', authMiddleware, async (req, res) => {
-    try {
-        const product = await Product.find();
-        res.json({
-            product,
-            msg: `Hello User ${req.user.id}, you are authenticated!`
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error while fetching products.' });
-    }
-});
-
+// Protected route
+router.get('/protected', authMiddleware, protectedController.protected);
 
 module.exports = router;

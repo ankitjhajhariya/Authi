@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+
 dotenv.config({ path: './backend/.env' });
 
 const authRoutes = require('./routes/Auth');
@@ -10,23 +11,26 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_CONNECT;
 
-// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ DB Connection
-mongoose.connect(MONGO_URI)
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
     .then(() => console.log('✅ MongoDB connected'))
     .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// ✅ Routes
+// API Routes
 app.use('/api', authRoutes);
 
+// Root endpoint
 app.get('/', (req, res) => {
-    res.send('root Get api...Backend is running');
-})
+    res.send('Backend is running');
+});
 
-// ✅ Server start
+// Start server
 app.listen(PORT, () =>
     console.log(`🚀 Server running on http://localhost:${PORT}`)
 );
