@@ -10,7 +10,7 @@ export default function Login() {
         e.preventDefault();
         const API_URL = import.meta.env.VITE_API_URL;
         try {
-            const res = await axios.post(`${API_URL}/api/protected`, { email, password });
+            const res = await axios.post(`${API_URL}/api/login`, { email, password });
             localStorage.setItem('token', res.data.token);
             window.location.href = '/dashboard';
         } catch {
