@@ -22,7 +22,7 @@ mongoose.connect(MONGO_URI)
 // ✅ Routes
 app.use('/api', authRoutes);
 
-api.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send('root Get api...Backend is running');
 })
 
