@@ -9,7 +9,7 @@ export default function Dashboard() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         axios
-            .get('http://localhost:8080/api/protected', {
+            .get('https://authi-fe2r.onrender.com/api/protected', {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {

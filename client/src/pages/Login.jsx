@@ -9,7 +9,7 @@ export default function Login() {
     const login = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:8080/api/login', { email, password });
+            const res = await axios.post('https://authi-fe2r.onrender.com/api/login', { email, password });
             localStorage.setItem('token', res.data.token);
             window.location.href = '/dashboard';
         } catch {
