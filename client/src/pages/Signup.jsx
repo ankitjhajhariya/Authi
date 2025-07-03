@@ -10,13 +10,14 @@ export default function Signup() {
 
     const signup = async (e) => {
         e.preventDefault();
+        const API_URL = import.meta.env.VITE_API_URL;
         if (password !== confirm) {
             alert('Passwords do not match.');
             return;
         }
 
         try {
-            const res = await axios.post('https://authi-fe2r.onrender.com/api/signup', {
+            const res = await axios.post(`${API_URL}/api/protected`, {
                 name,
                 email,
                 password,

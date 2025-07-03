@@ -7,8 +7,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const API_URL = import.meta.env.VITE_API_URL;
         axios
-            .get('https://authi-fe2r.onrender.com/api/protected', {
+            .get(`${API_URL}/api/protected`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {
