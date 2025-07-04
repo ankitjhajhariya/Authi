@@ -11,14 +11,15 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_CONNECT;
 
 const corsOptions = {
-    origin: ["*"
-
+    origin: [
+        "https://authi-psi.vercel.app",
+        "http://localhost:5173"
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
 };
-
 app.use(cors(corsOptions));
+
 
 app.use(express.json());
 
