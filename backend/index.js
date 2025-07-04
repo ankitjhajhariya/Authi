@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_CONNECT;
 
 const corsOptions = {
-    origin: ['https://authi-seven.vercel.app'],
+    origin: "*",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
 };
@@ -27,7 +27,7 @@ mongoose.connect(MONGO_URI)
     .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // API Routes
-app.use('/  ', authRoutes);
+app.use('/api', authRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
